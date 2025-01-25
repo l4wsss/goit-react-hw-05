@@ -4,16 +4,16 @@ import { fetchMovieDetails } from "../../API";
 
 const MoviesPage = () => {
   const location = useLocation();
-  const { poster_path, title, overview, vote_average } = location.state;
+  const { poster_path, title, overview, vote_average, id } = location.state;
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
     const getGenres = async () => {
-      const movieDetails = await fetchMovieDetails(location.state.id);
+      const movieDetails = await fetchMovieDetails(id);
       setGenres(movieDetails.genres);
     };
     getGenres();
-  }, [location.state.id]);
+  }, [id]);
 
   // console.log(location.state.id);
   return (

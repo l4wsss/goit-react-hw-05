@@ -4,7 +4,7 @@ import Home from "./pages/Home/Home";
 import Movie from "./pages/Movie/Movie";
 import MoviesPage from "./pages/MoviesPage/MoviesPage";
 import MovieCast from "./components/MovieCast/MovieCast";
-import MovieReviews from "./components/MovieCast/MovieReviews/MovieReviews";
+import MovieReviews from "./components/MovieReviews/MovieReviews";
 
 function App() {
   return (
