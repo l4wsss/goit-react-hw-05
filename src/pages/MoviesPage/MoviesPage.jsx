@@ -1,61 +1,51 @@
+import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import { fetchMovieDetails } from "../../API";
+import { useSearchParams } from "react-router-dom";
+import { searchMovies } from "../../API";
+import MovieList from "../../components/MovieList/MovieList";
 
-const MoviesPage = () => {
-  const location = useLocation();
-  const { poster_path, title, overview, vote_average, id } = location.state;
-  const [genres, setGenres] = useState([]);
+const MoviePage = () => {
+  const [results, setResults] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("query") ?? "";
+
+  const onSubmit = (values) => {
+    console.log(values);
+    handleChangeQuery(values.query);
+  };
 
   useEffect(() => {
-    const getGenres = async () => {
-      const movieDetails = await fetchMovieDetails(id);
-      setGenres(movieDetails.genres);
+    const getData = async () => {
+      const data = await searchMovies(query);
+      setResults(data);
     };
-    getGenres();
-  }, [id]);
+    if (query) {
+      getData();
+    }
+  }, [query]);
 
-  // console.log(location.state.id);
+  const handleChangeQuery = (newQuery) => {
+    if (!newQuery) {
+      searchParams.delete("query");
+    } else {
+      searchParams.set("query", newQuery);
+    }
+    setSearchParams({ query: newQuery });
+  };
+  console.log(results);
+
   return (
-    <>
-      <div>
-        <img
-          src={`https://image.tmdb.org/t/p/w200${poster_path}`}
-          alt={title}
-        />
-        <div>
-          <h2>{title}</h2>
-          <p>User score: {vote_average}</p>
-          <h3>Overview</h3>
-          <p>{overview} </p>
-          <h3>Genres</h3>
-          <ul>
-            {genres.map((genre) => (
-              <li key={genre.id}>{genre.name}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <div>
-        <h4>Additional information</h4>
-        <nav>
-          <ul>
-            <li>
-              <Link to="cast" state={location.state}>
-                Cast
-              </Link>
-            </li>
-            <li>
-              <Link to="reviews" state={location.state}>
-                Reviews
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <Outlet />
-    </>
+    <div>
+      <Formik initialValues={{ query }} onSubmit={onSubmit}>
+        <Form>
+          <Field name="query" placeholder="Search for movies..." />
+          <button type="submit">Search</button>
+        </Form>
+      </Formik>
+
+      <MovieList movies={results} />
+    </div>
   );
 };
 
-export default MoviesPage;
+export default MoviePage;
