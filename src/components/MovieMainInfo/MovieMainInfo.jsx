@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
+import s from "./MovieMainInfo.module.css";
 
 const MovieMainInfo = ({ movie }) => {
   const { poster_path, title, overview, vote_average, genres } = movie;
   return (
-    <div>
+    <div className={s.container}>
       <img src={`https://image.tmdb.org/t/p/w200${poster_path}`} alt={title} />
       <div>
         <h2>{title}</h2>
@@ -11,7 +12,7 @@ const MovieMainInfo = ({ movie }) => {
         <h3>Overview</h3>
         <p>{overview} </p>
         <h3>Genres</h3>
-        <ul>
+        <ul className={s.genres}>
           {genres.map((genre) => (
             <li key={genre.id}>{genre.name}</li>
           ))}
