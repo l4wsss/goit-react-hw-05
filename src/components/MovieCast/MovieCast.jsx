@@ -1,23 +1,19 @@
 import { useEffect, useState } from "react";
 import { fetchMovieCast } from "../../API";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import s from "./MovieCast.module.css";
 
 const MovieCast = () => {
-  const location = useLocation();
-  const { id } = location.state;
+  const { movieId } = useParams();
   const [actors, setActors] = useState([]);
-  // console.log(location.state.id);
+
   useEffect(() => {
     const getData = async () => {
-      const movieCast = await fetchMovieCast(id);
+      const movieCast = await fetchMovieCast(movieId);
       setActors(movieCast.cast);
     };
     getData();
-  }, [id]);
-  console.log(actors);
-
-  // console.log(fetchMovieCast(id));
+  }, [movieId]);
 
   return (
     <div>

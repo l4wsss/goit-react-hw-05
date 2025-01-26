@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { fetchMovieReviews } from "../../API";
 
 const MovieReviews = () => {
-  const location = useLocation();
+  const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
     const getData = async () => {
-      const movieReviews = await fetchMovieReviews(location.state.id);
+      const movieReviews = await fetchMovieReviews(movieId);
       setReviews(movieReviews);
     };
     getData();
-  }, [location.state.id]);
+  }, [movieId]);
   return (
     <div>
       <ul>

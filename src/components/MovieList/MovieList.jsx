@@ -9,10 +9,7 @@ function MovieList({ movies }) {
         {movies &&
           movies.map((movie) => (
             <li key={movie.id}>
-              <Link
-                to={`/movies/${movie.id}`}
-                state={{ ...movie, ...location }}
-              >
+              <Link to={`/movies/${movie.id}`} state={location}>
                 {movie.title}
               </Link>
             </li>
